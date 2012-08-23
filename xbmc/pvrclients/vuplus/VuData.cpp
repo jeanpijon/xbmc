@@ -1150,7 +1150,7 @@ std::vector<VuTimer> Vu::LoadTimers()
     else 
       timer.iEpgID = 0;
 
-    timer.state = PVR_TIMER_STATE_INVALID;
+    timer.state = PVR_TIMER_STATE_NEW;
 
     if (!GetInt(xTmp, "e2state", iTmp))
       continue;
@@ -1184,8 +1184,8 @@ std::vector<VuTimer> Vu::LoadTimers()
 		XBMC->Log(LOG_DEBUG, "%s Timer state is: Cancelled", __FUNCTION__);
 	}
 
-    if (timer.state == PVR_TIMER_STATE_INVALID)
-      XBMC->Log(LOG_DEBUG, "%s Timer state is: INVALID", __FUNCTION__);
+    if (timer.state == PVR_TIMER_STATE_NEW)
+      XBMC->Log(LOG_DEBUG, "%s Timer state is: NEW", __FUNCTION__);
 
     timers.push_back(timer);
 
@@ -1412,7 +1412,7 @@ PVR_ERROR Vu::DeleteRecording(const PVR_RECORDING &recinfo)
 
   CStdString strResult;
   if(!SendSimpleCommand(strTmp, strResult)) 
-    return PVR_ERROR_NOT_DELETED;
+    return PVR_ERROR_FAILED;
 
   PVR->TriggerRecordingUpdate();
 

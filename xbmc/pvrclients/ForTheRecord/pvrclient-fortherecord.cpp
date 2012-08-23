@@ -777,7 +777,7 @@ bool cPVRClientForTheRecord::FetchRecordingDetails(std::string recordingid, cRec
 
 PVR_ERROR cPVRClientForTheRecord::DeleteRecording(const PVR_RECORDING &recinfo)
 {
-  PVR_ERROR rc = PVR_ERROR_NOT_DELETED;
+  PVR_ERROR rc = PVR_ERROR_FAILED;
 
   XBMC->Log(LOG_DEBUG, "->DeleteRecording(%s)", recinfo.strRecordingId);
 
@@ -933,7 +933,7 @@ PVR_ERROR cPVRClientForTheRecord::AddTimer(const PVR_TIMER &timerinfo)
     XBMC->Log(LOG_ERROR, "Unable to translate XBMC channel %d to ForTheRecord channel GUID, timer not added.",
       timerinfo.iClientChannelUid);
     XBMC->QueueNotification(QUEUE_ERROR, "XBMC Channel to GUID");
-    return PVR_ERROR_NOT_POSSIBLE;
+    return PVR_ERROR_SERVER_ERROR;
   }
 
   Json::Value addScheduleResponse;
@@ -989,7 +989,7 @@ PVR_ERROR cPVRClientForTheRecord::DeleteTimer(const PVR_TIMER &timerinfo, bool f
     XBMC->Log(LOG_ERROR, "Unable to translate XBMC channel %d to ForTheRecord channel GUID, timer not deleted.",
       timerinfo.iClientChannelUid);
     XBMC->QueueNotification(QUEUE_ERROR, "XBMC Channel to GUID");
-    return PVR_ERROR_NOT_POSSIBLE;
+    return PVR_ERROR_SERVER_ERROR;
   }
 
   // retrieve the currently active recordings
@@ -1070,7 +1070,7 @@ PVR_ERROR cPVRClientForTheRecord::DeleteTimer(const PVR_TIMER &timerinfo, bool f
       }
     }
   }
-  return PVR_ERROR_NOT_POSSIBLE;
+  return PVR_ERROR_SERVER_ERROR;
 }
 
 PVR_ERROR cPVRClientForTheRecord::UpdateTimer(const PVR_TIMER &timerinfo)

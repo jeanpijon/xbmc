@@ -1018,7 +1018,7 @@ PVR_ERROR cPVRClientMediaPortal::DeleteRecording(const PVR_RECORDING &recording)
 
   if(result.find("True") ==  string::npos)
   {
-    return PVR_ERROR_NOT_DELETED;
+    return PVR_ERROR_FAILED;
   }
 
   // Although XBMC initiates the deletion of this recording, we still have to trigger XBMC to update its
@@ -1045,7 +1045,7 @@ PVR_ERROR cPVRClientMediaPortal::RenameRecording(const PVR_RECORDING &recording)
   if(result.find("True") == string::npos)
   {
     XBMC->Log(LOG_DEBUG, "RenameRecording(%s) to %s [failed]", recording.strRecordingId, recording.strTitle);
-    return PVR_ERROR_NOT_DELETED;
+    return PVR_ERROR_FAILED;
   }
   XBMC->Log(LOG_DEBUG, "RenameRecording(%s) to %s [done]", recording.strRecordingId, recording.strTitle);
 
@@ -1162,7 +1162,7 @@ PVR_ERROR cPVRClientMediaPortal::AddTimer(const PVR_TIMER &timerinfo)
   if(result.find("True") ==  string::npos)
   {
     XBMC->Log(LOG_DEBUG, "AddTimer for channel: %i [failed]", timerinfo.iClientChannelUid);
-    return PVR_ERROR_NOT_SAVED;
+    return PVR_ERROR_FAILED;
   }
   XBMC->Log(LOG_DEBUG, "AddTimer for channel: %i [done]", timerinfo.iClientChannelUid);
 
@@ -1189,7 +1189,7 @@ PVR_ERROR cPVRClientMediaPortal::DeleteTimer(const PVR_TIMER &timer, bool bForce
   if(result.find("True") ==  string::npos)
   {
     XBMC->Log(LOG_DEBUG, "DeleteTimer %i [failed]", timer.iClientIndex);
-    return PVR_ERROR_NOT_DELETED;
+    return PVR_ERROR_FAILED;
   }
   XBMC->Log(LOG_DEBUG, "DeleteTimer %i [done]", timer.iClientIndex);
 
@@ -1219,7 +1219,7 @@ PVR_ERROR cPVRClientMediaPortal::UpdateTimer(const PVR_TIMER &timerinfo)
   if(result.find("True") ==  string::npos)
   {
     XBMC->Log(LOG_DEBUG, "UpdateTimer for channel: %i [failed]", timerinfo.iClientChannelUid);
-    return PVR_ERROR_NOT_SAVED;
+    return PVR_ERROR_FAILED;
   }
   XBMC->Log(LOG_DEBUG, "UpdateTimer for channel: %i [done]", timerinfo.iClientChannelUid);
 
