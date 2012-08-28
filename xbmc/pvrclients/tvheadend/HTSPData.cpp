@@ -22,7 +22,7 @@
 #include "HTSPData.h"
 
 extern "C" {
-#include "cmyth/include/refmem/atomic.h"
+#include "platform/util/atomic.h"
 #include "libhts/htsmsg.h"
 #include "libhts/htsmsg_binary.h"
 }

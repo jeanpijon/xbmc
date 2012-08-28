@@ -39,16 +39,10 @@ enum eStreamingMethod
 #define DEFAULT_RADIO                 true
 #define DEFAULT_TIMEOUT               10
 #define DEFAULT_HANDLE_MSG            false
-#ifdef TSREADER
 #define DEFAULT_RESOLVE_RTSP_HOSTNAME false
-#else
-#define DEFAULT_RESOLVE_RTSP_HOSTNAME true
-#endif
 #define DEFAULT_READ_GENRE            false
 #define DEFAULT_SLEEP_RTSP_URL        0
 #define DEFAULT_USE_REC_DIR           false
-//#define DEFAULT_REC_DIR               ""
-//#define DEFAULT_TIMESHIFT_DIR         ""
 #define DEFAULT_TVGROUP               ""
 #define DEFAULT_RADIOGROUP            ""
 #define DEFAULT_DIRECT_TS_FR          false

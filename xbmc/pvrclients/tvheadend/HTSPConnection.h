@@ -22,7 +22,7 @@
  */
 
 #include "HTSPTypes.h"
-#include "../../../lib/platform/threads/mutex.h"
+#include "platform/threads/mutex.h"
 
 extern "C" {
 #include "libhts/net.h"

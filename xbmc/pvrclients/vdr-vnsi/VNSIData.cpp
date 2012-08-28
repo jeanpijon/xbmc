@@ -23,7 +23,7 @@
 #include "responsepacket.h"
 #include "requestpacket.h"
 #include "vnsicommand.h"
-#include "utils/StdString.h"
+#include "platform/util/StdString.h"
 
 using namespace ADDON;
 using namespace PLATFORM;
@@ -340,7 +340,7 @@ PVR_ERROR cVNSIData::GetTimerInfo(unsigned int timernumber, PVR_TIMER &tag)
   {
     delete vresp;
     if (returnCode == VNSI_RET_DATAUNKNOWN)
-      return PVR_ERROR_SERVER_ERROR;
+      return PVR_ERROR_FAILED;
     else if (returnCode == VNSI_RET_ERROR)
       return PVR_ERROR_SERVER_ERROR;
   }
@@ -499,7 +499,7 @@ PVR_ERROR cVNSIData::AddTimer(const PVR_TIMER &timerinfo)
   if (returnCode == VNSI_RET_DATALOCKED)
     return PVR_ERROR_ALREADY_PRESENT;
   else if (returnCode == VNSI_RET_DATAINVALID)
-    return PVR_ERROR_FAILED;
+    return PVR_ERROR_INVALID_PARAMETERS;
   else if (returnCode == VNSI_RET_ERROR)
     return PVR_ERROR_SERVER_ERROR;
 
@@ -533,7 +533,7 @@ PVR_ERROR cVNSIData::DeleteTimer(const PVR_TIMER &timerinfo, bool force)
   if (returnCode == VNSI_RET_RECRUNNING)
     return PVR_ERROR_RECORDING_RUNNING;
   else if (returnCode == VNSI_RET_DATAINVALID)
-    return PVR_ERROR_SERVER_ERROR;
+    return PVR_ERROR_INVALID_PARAMETERS;
   else if (returnCode == VNSI_RET_ERROR)
     return PVR_ERROR_SERVER_ERROR;
 
@@ -581,9 +581,9 @@ PVR_ERROR cVNSIData::UpdateTimer(const PVR_TIMER &timerinfo)
   uint32_t returnCode = vresp->extract_U32();
   delete vresp;
   if (returnCode == VNSI_RET_DATAUNKNOWN)
-    return PVR_ERROR_SERVER_ERROR;
-  else if (returnCode == VNSI_RET_DATAINVALID)
     return PVR_ERROR_FAILED;
+  else if (returnCode == VNSI_RET_DATAINVALID)
+    return PVR_ERROR_INVALID_PARAMETERS;
   else if (returnCode == VNSI_RET_ERROR)
     return PVR_ERROR_SERVER_ERROR;
 
@@ -699,7 +699,7 @@ PVR_ERROR cVNSIData::RenameRecording(const PVR_RECORDING& recinfo, const char* n
   delete vresp;
 
   if(returnCode != 0)
-   return PVR_ERROR_SERVER_ERROR;
+   return PVR_ERROR_FAILED;
 
   return PVR_ERROR_NO_ERROR;
 }
@@ -735,7 +735,7 @@ PVR_ERROR cVNSIData::DeleteRecording(const PVR_RECORDING& recinfo)
       return PVR_ERROR_RECORDING_RUNNING;
 
     case VNSI_RET_DATAINVALID:
-      return PVR_ERROR_SERVER_ERROR;
+      return PVR_ERROR_INVALID_PARAMETERS;
 
     case VNSI_RET_ERROR:
       return PVR_ERROR_SERVER_ERROR;

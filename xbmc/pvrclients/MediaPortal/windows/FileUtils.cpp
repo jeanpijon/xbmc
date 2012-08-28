@@ -1,8 +1,8 @@
-#include "FileUtils.h"
+#include "../FileUtils.h"
 #include "os_windows.h"
 #include <string>
 #include "platform/util/StdString.h"
-#include "utils.h"
+#include "../utils.h"
 
 namespace OS
 {

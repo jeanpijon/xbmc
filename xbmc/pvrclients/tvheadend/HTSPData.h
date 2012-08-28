@@ -22,7 +22,7 @@
  */
 
 #include "client.h"
-#include "../../../lib/platform/threads/threads.h"
+#include "platform/threads/threads.h"
 #include "HTSPConnection.h"
 
 class CHTSResult

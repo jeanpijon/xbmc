@@ -26,7 +26,7 @@
 #include <vector>
 #include <map>
 
-#include "utils/StdString.h"
+#include "platform/util/StdString.h"
 
 typedef struct htsmsg htsmsg_t;
 

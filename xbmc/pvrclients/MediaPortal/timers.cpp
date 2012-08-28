@@ -167,7 +167,6 @@ void cTimer::GetPVRtimerinfo(PVR_TIMER &tag)
   tag.iMarginEnd        = m_postrecordinterval * 60;
   tag.iGenreType        = 0;
   tag.iGenreSubType     = 0;
-  
 }
 
 time_t cTimer::StartTime(void) const

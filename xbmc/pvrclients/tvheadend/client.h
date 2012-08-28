@@ -20,8 +20,8 @@
  *
  */
 
-#include "../../../addons/library.xbmc.addon/libXBMC_addon.h"
-#include "../../../addons/library.xbmc.pvr/libXBMC_pvr.h"
+#include "libXBMC_addon.h"
+#include "libXBMC_pvr.h"
 
 #define DEFAULT_HOST             "127.0.0.1"
 #define DEFAULT_HTTP_PORT        9981
