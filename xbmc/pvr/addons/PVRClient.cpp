@@ -23,7 +23,7 @@
 #include "PVRClient.h"
 #include "pvr/PVRManager.h"
 #include "epg/Epg.h"
-#include "pvr/channels/PVRChannelGroups.h"
+#include "pvr/channels/PVRChannelGroupsContainer.h"
 #include "pvr/timers/PVRTimers.h"
 #include "pvr/timers/PVRTimerInfoTag.h"
 #include "pvr/recordings/PVRRecordings.h"
@@ -39,13 +39,15 @@ using namespace EPG;
 #define DEFAULT_INFO_STRING_VALUE "unknown"
 
 CPVRClient::CPVRClient(const AddonProps& props) :
-    CAddonDll<DllPVRClient, PVRClient, PVR_PROPERTIES>(props)
+    CAddonDll<DllPVRClient, PVRClient, PVR_PROPERTIES>(props),
+    m_apiVersion("0.0.0")
 {
   ResetProperties();
 }
 
 CPVRClient::CPVRClient(const cp_extension_t *ext) :
-    CAddonDll<DllPVRClient, PVRClient, PVR_PROPERTIES>(ext)
+    CAddonDll<DllPVRClient, PVRClient, PVR_PROPERTIES>(ext),
+    m_apiVersion("0.0.0")
 {
   ResetProperties();
 }
@@ -58,16 +60,13 @@ CPVRClient::~CPVRClient(void)
 
 void CPVRClient::ResetProperties(int iClientId /* = PVR_INVALID_CLIENT_ID */)
 {
-   CLog::Log(LOGDEBUG, "PVR - %s - creating PVR add-on instance '%s'", __FUNCTION__, Name().c_str());
-
   /* initialise members */
   SAFE_DELETE(m_pInfo);
-  m_pInfo                 = new PVR_PROPERTIES;
+  m_pInfo = new PVR_PROPERTIES;
   CStdString userpath     = CSpecialProtocol::TranslatePath(Profile());
   m_pInfo->strUserPath    = userpath.c_str();
   CStdString clientpath   = CSpecialProtocol::TranslatePath(Path());
   m_pInfo->strClientPath  = clientpath.c_str();
-
   m_menuhooks.clear();
   m_bReadyToUse           = false;
   m_iClientId             = iClientId;
@@ -79,6 +78,7 @@ void CPVRClient::ResetProperties(int iClientId /* = PVR_INVALID_CLIENT_ID */)
   m_bIsPlayingRecording   = false;
   memset(&m_addonCapabilities, 0, sizeof(m_addonCapabilities));
   ResetQualityData(m_qualityInfo);
+  m_apiVersion = AddonVersion("0.0.0");
 }
 
 bool CPVRClient::Create(int iClientId)
@@ -239,9 +239,7 @@ void CPVRClient::WriteClientChannelInfo(const CPVRChannel &xbmcChannel, PVR_CHAN
 
 bool CPVRClient::IsCompatibleAPIVersion(const ADDON::AddonVersion &version)
 {
-  AddonVersion currentVersion = AddonVersion(XBMC_PVR_API_VERSION);
-
-  // initially it just needs to match
+  AddonVersion currentVersion = AddonVersion(XBMC_PVR_MIN_API_VERSION);
   return (version >= currentVersion);
 }
 
@@ -251,12 +249,10 @@ bool CPVRClient::GetAddonProperties(void)
   PVR_ADDON_CAPABILITIES addonCapabilities;
 
   /* check the API version */
-  AddonVersion APIVersion("0.0.0");
-  try { APIVersion = AddonVersion(m_pStruct->GetPVRAPIVersion()); }
+  try { m_apiVersion = AddonVersion(m_pStruct->GetPVRAPIVersion()); }
   catch (exception &e) { LogException(e, "GetPVRAPIVersion()"); return false;  }
 
-  AddonVersion currentVersion = AddonVersion(XBMC_PVR_API_VERSION);
-  if (!IsCompatibleAPIVersion(APIVersion))
+  if (!IsCompatibleAPIVersion(m_apiVersion))
   {
     CLog::Log(LOGERROR, "PVR - Add-on '%s' is using an incompatible API version. Please contact the developer of this add-on: %s", GetFriendlyName().c_str(), Author().c_str());
     return false;
@@ -911,9 +907,10 @@ bool CPVRClient::SwitchChannel(const CPVRChannel &channel)
 
   if (bSwitched)
   {
+    CPVRChannelPtr currentChannel = g_PVRChannelGroups->GetByUniqueID(channel.UniqueID(), channel.ClientID());
     CSingleLock lock(m_critSection);
     ResetQualityData(m_qualityInfo);
-    m_playingChannel = channel;
+    m_playingChannel = currentChannel;
   }
 
   return bSwitched;
@@ -1135,19 +1132,19 @@ bool CPVRClient::IsPlayingLiveStream(void) const
 bool CPVRClient::IsPlayingLiveTV(void) const
 {
   CSingleLock lock(m_critSection);
-  return m_bReadyToUse && m_bIsPlayingTV && !m_playingChannel.IsRadio();
+  return m_bReadyToUse && m_bIsPlayingTV && !m_playingChannel->IsRadio();
 }
 
 bool CPVRClient::IsPlayingLiveRadio(void) const
 {
   CSingleLock lock(m_critSection);
-  return m_bReadyToUse && m_bIsPlayingTV && m_playingChannel.IsRadio();
+  return m_bReadyToUse && m_bIsPlayingTV && m_playingChannel->IsRadio();
 }
 
 bool CPVRClient::IsPlayingEncryptedChannel(void) const
 {
   CSingleLock lock(m_critSection);
-  return m_bReadyToUse && m_bIsPlayingTV && m_playingChannel.IsEncrypted();
+  return m_bReadyToUse && m_bIsPlayingTV && m_playingChannel->IsEncrypted();
 }
 
 bool CPVRClient::IsPlayingRecording(void) const
@@ -1162,7 +1159,7 @@ bool CPVRClient::IsPlaying(void) const
          IsPlayingRecording();
 }
 
-bool CPVRClient::GetPlayingChannel(CPVRChannel &channel) const
+bool CPVRClient::GetPlayingChannel(CPVRChannelPtr &channel) const
 {
   CSingleLock lock(m_critSection);
   if (m_bReadyToUse && m_bIsPlayingTV)
@@ -1184,13 +1181,34 @@ bool CPVRClient::GetPlayingRecording(CPVRRecording &recording) const
   return false;
 }
 
-bool CPVRClient::OpenStream(const CPVRChannel &channel)
+bool CPVRClient::OpenStream(const CPVRChannel &channel, bool bIsSwitchingChannel)
 {
   bool bReturn(false);
   CloseStream();
 
-  if(CanPlayChannel(channel))
+  if(!CanPlayChannel(channel))
   {
+    CLog::Log(LOGDEBUG, "add-on '%s' can not play channel '%s'", GetFriendlyName().c_str(), channel.ChannelName().c_str());
+  }
+  else if (!channel.StreamURL().IsEmpty())
+  {
+    CLog::Log(LOGDEBUG, "opening live stream on url '%s'", channel.StreamURL().c_str());
+    bReturn = true;
+
+    // the Njoy N7 sometimes doesn't switch channels, but opens a stream to the previous channel
+    // when not waiting for a short period.
+    // added in 1.1.0
+    AddonVersion checkVersion("1.1.0");
+    if (m_apiVersion >= checkVersion)
+    {
+      unsigned int iWaitTimeMs = m_pStruct->GetChannelSwitchDelay();
+      if (iWaitTimeMs > 0)
+        XbmcThreads::ThreadSleep(iWaitTimeMs);
+    }
+  }
+  else
+  {
+    CLog::Log(LOGDEBUG, "opening live stream for channel '%s'", channel.ChannelName().c_str());
     PVR_CHANNEL tag;
     WriteClientChannelInfo(channel, tag);
 
@@ -1200,8 +1218,9 @@ bool CPVRClient::OpenStream(const CPVRChannel &channel)
 
   if (bReturn)
   {
+    CPVRChannelPtr currentChannel = g_PVRChannelGroups->GetByUniqueID(channel.UniqueID(), channel.ClientID());
     CSingleLock lock(m_critSection);
-    m_playingChannel      = channel;
+    m_playingChannel      = currentChannel;
     m_bIsPlayingTV        = true;
     m_bIsPlayingRecording = false;
   }
@@ -1256,6 +1275,7 @@ void CPVRClient::CloseStream(void)
 
 void CPVRClient::ResetQualityData(PVR_SIGNAL_STATUS &qualityInfo)
 {
+  memset(&qualityInfo, 0, sizeof(qualityInfo));
   if (g_guiSettings.GetBool("pvrplayback.signalquality"))
   {
     strncpy(qualityInfo.strAdapterName, g_localizeStrings.Get(13205).c_str(), 1024);
@@ -1266,13 +1286,6 @@ void CPVRClient::ResetQualityData(PVR_SIGNAL_STATUS &qualityInfo)
     strncpy(qualityInfo.strAdapterName, g_localizeStrings.Get(13106).c_str(), 1024);
     strncpy(qualityInfo.strAdapterStatus, g_localizeStrings.Get(13106).c_str(), 1024);
   }
-  qualityInfo.iSNR          = 0;
-  qualityInfo.iSignal       = 0;
-  qualityInfo.iSNR          = 0;
-  qualityInfo.iUNC          = 0;
-  qualityInfo.dVideoBitrate = 0;
-  qualityInfo.dAudioBitrate = 0;
-  qualityInfo.dDolbyBitrate = 0;
 }
 
 void CPVRClient::GetQualityData(PVR_SIGNAL_STATUS *status) const
