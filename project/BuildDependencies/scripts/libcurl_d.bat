@@ -14,4 +14,7 @@ del curl-7.21.6-devel-mingw32\bin\zlib1.dll
 xcopy curl-7.21.6-devel-mingw32\include\curl "%CUR_PATH%\include\curl" /E /Q /I /Y
 copy curl-7.21.6-devel-mingw32\bin\*.dll "%XBMC_PATH%\system\" /Y
 
+rem For the pvr addons that statically link libcurl:
+xcopy curl-7.21.6-devel-mingw32\lib\*.a "%CUR_PATH%\lib" /Y
+
 cd %LOC_PATH%
