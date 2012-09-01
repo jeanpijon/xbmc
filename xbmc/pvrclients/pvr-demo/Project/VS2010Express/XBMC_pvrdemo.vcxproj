@@ -11,13 +11,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\client.h" />
-    <ClInclude Include="..\..\..\PVRDemoData.h" />
+    <ClCompile Include="..\..\..\..\..\lib\platform\windows\dlfcn-win32.cpp" />
+    <ClCompile Include="..\..\client.cpp" />
+    <ClCompile Include="..\..\PVRDemoData.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\addons\library.xbmc.addon\dlfcn-win32.cpp" />
-    <ClCompile Include="..\..\..\client.cpp" />
-    <ClCompile Include="..\..\..\PVRDemoData.cpp" />
+    <ClInclude Include="..\..\client.h" />
+    <ClInclude Include="..\..\PVRDemoData.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectName>pvrclient_demo</ProjectName>
@@ -48,7 +48,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\..\..\..\addons\pvr.demo\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\..\..\addons\pvr.demo\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Debug\</IntDir>
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</IgnoreImportLibrary>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
@@ -78,7 +78,6 @@
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <OutputFile>..\..\..\..\..\..\addons\pvr.demo\XBMC_demo_win32.pvr</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)XBMC_demo.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
@@ -107,7 +106,6 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <OutputFile>..\..\..\..\..\addons\pvr.team-mediaportal.tvserver\XBMC_demo_win32.pvr</OutputFile>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)XBMC_demo.pdb</ProgramDatabaseFile>
