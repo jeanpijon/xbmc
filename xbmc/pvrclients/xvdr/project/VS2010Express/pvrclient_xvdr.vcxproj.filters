@@ -2,44 +2,53 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\addons\library.xbmc.addon\dlfcn-win32.cpp" />
-    <ClCompile Include="..\..\client.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\xvdr\XBMCAddon.cpp">
+      <Filter>Source Files\xvdr</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\requestpacket.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\xvdr\XBMCCallbacks.cpp">
+      <Filter>Source Files\xvdr</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\thread.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\xvdr\XBMCChannelScan.cpp">
+      <Filter>Source Files\xvdr</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\tools.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\xvdr\XBMCSettings.cpp">
+      <Filter>Source Files\xvdr</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\XVDRChannelScan.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\libxvdr\src\iso639.cpp">
+      <Filter>Source Files\libxvdr</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\XVDRData.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\libxvdr\src\requestpacket.cpp">
+      <Filter>Source Files\libxvdr</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\XVDRDemux.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\libxvdr\src\tools.cpp">
+      <Filter>Source Files\libxvdr</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\XVDRRecording.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\libxvdr\src\XVDRCallbacks.cpp">
+      <Filter>Source Files\libxvdr</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\XVDRSession.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\libxvdr\src\XVDRData.cpp">
+      <Filter>Source Files\libxvdr</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\iso639.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\libxvdr\src\XVDRDemux.cpp">
+      <Filter>Source Files\libxvdr</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\XVDRResponsePacket.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\libxvdr\src\XVDRRecording.cpp">
+      <Filter>Source Files\libxvdr</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\XVDRSettings.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\libxvdr\src\XVDRResponsePacket.cpp">
+      <Filter>Source Files\libxvdr</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\libPlatform\windows\net_winsock.c">
-      <Filter>Source Files\libPlatform</Filter>
+    <ClCompile Include="..\..\libxvdr\src\XVDRSession.cpp">
+      <Filter>Source Files\libxvdr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libxvdr\src\XVDRThread.cpp">
+      <Filter>Source Files\libxvdr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libxvdr\src\libTcpSocket\windows\net_winsock.c">
+      <Filter>Source Files\libxvdr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libxvdr\src\libPlatform\windows\os_windows.cpp">
+      <Filter>Source Files\libxvdr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -49,52 +58,64 @@
     <Filter Include="Source Files">
       <UniqueIdentifier>{8f6400e9-2d4f-4132-a6d0-81f39e820f4b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\libPlatform">
-      <UniqueIdentifier>{2969f508-332a-4f04-a0c1-ddf4405415a7}</UniqueIdentifier>
+    <Filter Include="Source Files\xvdr">
+      <UniqueIdentifier>{4fa7b48b-398c-4149-80b7-1e4c9185d378}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\libxvdr">
+      <UniqueIdentifier>{5ba2aef6-cd23-4886-8ca8-7c260d4fc564}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\libxvdr">
+      <UniqueIdentifier>{fb0bf95d-f6ad-4545-8e1b-d22c54bd9446}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\xvdr">
+      <UniqueIdentifier>{b67f6acb-d57a-4359-a189-caa08527d0f0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\client.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\xvdr\XBMCAddon.h">
+      <Filter>Header Files\xvdr</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\codecids.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\xvdr\XBMCSettings.h">
+      <Filter>Header Files\xvdr</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\requestpacket.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\xvdr\XBMCCallbacks.h">
+      <Filter>Header Files\xvdr</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\thread.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\xvdr\XBMCChannelScan.h">
+      <Filter>Header Files\xvdr</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\tools.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\libxvdr\include\codecids.h">
+      <Filter>Header Files\libxvdr</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\XVDRChannelScan.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\libxvdr\include\iso639.h">
+      <Filter>Header Files\libxvdr</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\xvdrcommand.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\libxvdr\include\requestpacket.h">
+      <Filter>Header Files\libxvdr</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\XVDRData.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\libxvdr\include\XVDRCallbacks.h">
+      <Filter>Header Files\libxvdr</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\XVDRDemux.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\libxvdr\include\xvdrcommand.h">
+      <Filter>Header Files\libxvdr</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\XVDRRecording.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\libxvdr\include\XVDRData.h">
+      <Filter>Header Files\libxvdr</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\XVDRSession.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\libxvdr\include\XVDRDemux.h">
+      <Filter>Header Files\libxvdr</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\iso639.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\libxvdr\include\XVDRRecording.h">
+      <Filter>Header Files\libxvdr</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\XVDRSettings.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\libxvdr\include\XVDRResponsePacket.h">
+      <Filter>Header Files\libxvdr</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\XVDRResponsePacket.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\libxvdr\include\XVDRSession.h">
+      <Filter>Header Files\libxvdr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libxvdr\include\XVDRThread.h">
+      <Filter>Header Files\libxvdr</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
