@@ -326,7 +326,7 @@ void cXVDRDemux::StreamChange(cXVDRResponsePacket *resp)
       stream->iFPSRate       = resp->extract_U32();
       stream->iHeight        = resp->extract_U32();
       stream->iWidth         = resp->extract_U32();
-      stream->fAspect        = resp->extract_Double();
+      stream->fAspect        = (float) resp->extract_Double();
 
       m_Streams.iStreamCount++;
     }
@@ -338,7 +338,7 @@ void cXVDRDemux::StreamChange(cXVDRResponsePacket *resp)
       stream->iFPSRate       = resp->extract_U32();
       stream->iHeight        = resp->extract_U32();
       stream->iWidth         = resp->extract_U32();
-      stream->fAspect        = resp->extract_Double();
+      stream->fAspect        = (float) resp->extract_Double();
 
       m_Streams.iStreamCount++;
     }
@@ -444,7 +444,7 @@ bool cXVDRDemux::StreamContentInfo(cXVDRResponsePacket *resp)
         stream->iFPSRate  = resp->extract_U32();
         stream->iHeight   = resp->extract_U32();
         stream->iWidth    = resp->extract_U32();
-        stream->fAspect   = resp->extract_Double();
+        stream->fAspect   = (float) resp->extract_Double();
         break;
 
       case AVMEDIA_TYPE_SUBTITLE:

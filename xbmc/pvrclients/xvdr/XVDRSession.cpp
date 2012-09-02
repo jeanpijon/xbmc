@@ -24,7 +24,7 @@
 #include "XVDRResponsePacket.h"
 #include "client.h"
 
-#include <unistd.h>
+#include <inttypes.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <sys/types.h>
@@ -168,7 +168,7 @@ cXVDRResponsePacket* cXVDRSession::ReadMessage()
 
   // Data was read
 
-  bool compressed = (channelID & htonl(0x80000000));
+  bool compressed = (channelID & htonl(0x80000000)) > 0;
 
   if(compressed)
     channelID ^= htonl(0x80000000);
